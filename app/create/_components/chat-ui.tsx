@@ -200,9 +200,40 @@ export function ChatInterface() {
 				<h2 className="text-xl font-semibold text-foreground mb-2">
 					Chat with the Curator Agent
 				</h2>
-				<p className="text-sm text-muted-foreground">
+				<p className="text-sm text-muted-foreground mb-3">
 					Describe your vision and let AI create your NFT
 				</p>
+
+				{/* Flow Explanation */}
+				<div className="bg-muted/30 rounded-lg p-4 max-w-2xl mx-auto">
+					<h3 className="text-sm font-medium text-foreground mb-2">
+						🔄 Complete Workflow:
+					</h3>
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-muted-foreground">
+						<div className="text-center">
+							<div className="size-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+								<span className="text-blue-600 font-bold">1</span>
+							</div>
+							<p>Describe your vision</p>
+						</div>
+						<div className="text-center">
+							<div className="size-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+								<span className="text-purple-600 font-bold">2</span>
+							</div>
+							<p>AI generates NFT</p>
+						</div>
+						<div className="text-center">
+							<div className="size-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-1">
+								<span className="text-green-600 font-bold">3</span>
+							</div>
+							<p>Click to mint</p>
+						</div>
+					</div>
+					<p className="text-xs text-muted-foreground mt-2">
+						💡 <strong>Note:</strong> You'll need to sign a transaction with your wallet
+						to mint on Shape Network
+					</p>
+				</div>
 			</div>
 
 			<Conversation className="h-[400px] border rounded-xl bg-background">
@@ -277,16 +308,46 @@ export function ChatInterface() {
 																			ready to mint on Shape
 																			Network!
 																		</p>
-																		<div className="bg-white dark:bg-gray-800 rounded-lg p-3 text-left mb-4">
-																			<p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+
+																		{/* Clear Minting Instructions */}
+																		<div className="bg-white dark:bg-gray-800 rounded-lg p-4 text-left mb-4">
+																			<p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
 																				🚀 Ready to mint on
 																				Shape Network
 																			</p>
-																			<p className="text-xs text-gray-500 dark:text-gray-400">
-																				Click below to mint
-																				your NFT
+																			<p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+																				Click the button
+																				below to start the
+																				minting process
 																			</p>
+																			<div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+																				<p className="text-xs text-blue-700 dark:text-blue-300">
+																					💡{' '}
+																					<strong>
+																						What happens
+																						next:
+																					</strong>
+																					<br />
+																					1. Click "Mint
+																					NFT Now" below
+																					<br />
+																					2. Your wallet
+																					will pop up
+																					asking for
+																					approval
+																					<br />
+																					3. Sign the
+																					transaction to
+																					mint your NFT
+																					<br />
+																					4. Earn gasback
+																					rewards on Shape
+																					Network!
+																				</p>
+																			</div>
 																		</div>
+
+																		{/* Prominent Mint Button */}
 																		<button
 																			onClick={() => {
 																				// Find the NFT data and set it for minting
@@ -333,7 +394,7 @@ export function ChatInterface() {
 																					}
 																				}
 																			}}
-																			className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105"
+																			className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
 																		>
 																			🚀 Mint NFT Now
 																		</button>
