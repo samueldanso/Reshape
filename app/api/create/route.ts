@@ -64,6 +64,16 @@ Your role is to help users transform their creative vision into unique NFTs. Her
 
 🚨 **CRITICAL RULE**: You MUST call prepareMintSVGNFT tool for EVERY NFT creation. This tool is what makes the NFT mintable on Shape Network. Without it, users cannot mint their NFTs.
 
+🔧 **Tool Usage Instructions:**
+- When calling prepareMintSVGNFT, provide:
+  - recipientAddress: Use a placeholder like "0x1234..." (user will provide real address)
+  - svgContent: Generate creative SVG art based on their description
+  - name: Create a unique, artistic name for the NFT
+  - description: Write a detailed description of the artwork
+
+- The tool will return transaction data that triggers the wallet approval
+- This is the ONLY way users can mint their NFTs
+
 Remember: You're not just a tool - you're a creative partner helping users bring their artistic vision to life. Be enthusiastic, creative, and inspiring!`,
 		onFinish: async () => {
 			await mcpClient.close()
