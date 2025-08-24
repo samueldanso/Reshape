@@ -3,10 +3,10 @@
 import { cn } from "@/lib/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
-	Bookmark,
 	Bot,
-	Clock,
-	Compass,
+	Bookmark,
+	Home,
+	Image as ImageIcon,
 	PanelLeftOpen,
 	User,
 } from "lucide-react";
@@ -28,7 +28,7 @@ export function AppSidebar() {
 		{
 			href: "/",
 			label: "Discover",
-			icon: Compass,
+			icon: Home,
 			isActive: () => pathname === "/",
 		},
 		{
@@ -43,11 +43,18 @@ export function AppSidebar() {
 			icon: User,
 			isActive: () => pathname.startsWith("/artists"),
 		},
-	];
-
-	const myGalleryLinks = [
-		{ label: "Recent", icon: Clock, href: "/gallery/recent" },
-		{ label: "Bookmarks", icon: Bookmark, href: "/gallery/bookmarks" },
+		{
+			href: "/gallery",
+			label: "My Gallery",
+			icon: ImageIcon,
+			isActive: () => pathname.startsWith("/gallery"),
+		},
+		{
+			href: "/bookmarks",
+			label: "Bookmark",
+			icon: Bookmark,
+			isActive: () => pathname.startsWith("/bookmarks"),
+		},
 	];
 
 	const profileLink = {
@@ -81,6 +88,9 @@ export function AppSidebar() {
 					<Image src="/logo.svg" alt="Logo" width={32} height={32} priority />
 				</div>
 
+				{/* Divider */}
+				<div className="mx-2 h-px bg-border mb-2" />
+
 				{/* Center: Main Nav */}
 				<nav className="flex flex-col items-center gap-2 mt-6 w-full flex-1">
 					{/* Toggle button as first nav item */}
@@ -96,11 +106,18 @@ export function AppSidebar() {
 					{/* Main nav icons */}
 					{mainNavLinks.map((link) => {
 						const isActive = link.isActive();
+						const isProtected =
+							link.label === "My Gallery" || link.label === "Bookmark";
 						return (
 							<Link
 								key={link.href}
 								href={link.href}
 								className="flex items-center justify-center w-full"
+								onClick={
+									isProtected
+										? (e) => handleProtectedRoute(e, link.href)
+										: undefined
+								}
 							>
 								<span
 									className={cn(
@@ -115,22 +132,6 @@ export function AppSidebar() {
 							</Link>
 						);
 					})}
-
-					{/* My Gallery icons */}
-					<div className="flex flex-col items-center gap-2 mt-8">
-						{myGalleryLinks.map((link) => (
-							<Link
-								key={link.href}
-								href={link.href}
-								className="flex items-center justify-center w-full"
-								onClick={(e) => handleProtectedRoute(e, link.href)}
-							>
-								<span className="flex items-center justify-center w-10 h-10 rounded-full transition-colors text-muted-foreground hover:bg-accent/50 hover:text-foreground">
-									<link.icon className="h-5 w-5 mx-auto" />
-								</span>
-							</Link>
-						))}
-					</div>
 				</nav>
 
 				{/* Profile icon at bottom */}
@@ -172,10 +173,15 @@ export function AppSidebar() {
 				</button>
 			</div>
 
+			{/* Divider */}
+			<div className="mx-2 h-px bg-border mb-2" />
+
 			<nav className="flex-1 flex flex-col gap-2 mt-6">
 				{/* Main Navigation */}
 				{mainNavLinks.map((link) => {
 					const isActive = link.isActive();
+					const isProtected =
+						link.label === "My Gallery" || link.label === "Bookmark";
 					return (
 						<Link
 							key={link.href}
@@ -186,32 +192,17 @@ export function AppSidebar() {
 									? "text-foreground font-semibold bg-accent"
 									: "text-muted-foreground hover:bg-muted hover:text-foreground",
 							)}
+							onClick={
+								isProtected
+									? (e) => handleProtectedRoute(e, link.href)
+									: undefined
+							}
 						>
 							<link.icon className="h-5 w-5" />
 							<span>{link.label}</span>
 						</Link>
 					);
 				})}
-
-				{/* My Gallery Section Header */}
-				<div className="px-4 pt-6 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider select-none cursor-default">
-					My Gallery
-				</div>
-
-				{/* My Gallery Links */}
-				<div className="flex flex-col gap-1">
-					{myGalleryLinks.map((link) => (
-						<Link
-							key={link.href}
-							href={link.href}
-							className="flex items-center gap-3 rounded-lg px-2 py-2 font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-							onClick={(e) => handleProtectedRoute(e, link.href)}
-						>
-							<link.icon className="h-5 w-5" />
-							<span>{link.label}</span>
-						</Link>
-					))}
-				</div>
 			</nav>
 
 			{/* Profile at the bottom */}

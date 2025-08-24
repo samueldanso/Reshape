@@ -1,5 +1,3 @@
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -8,12 +6,14 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function Home() {
 	return (
 		<div className="flex min-h-[calc(100vh-200px)] flex-col items-center justify-center space-y-8">
 			<div className="space-y-4 text-center">
-				<h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+				<h1 className="text-4xl text-primary font-bold tracking-tight sm:text-6xl">
 					Reshape
 				</h1>
 				<p className="text-muted-foreground max-w-2xl text-xl">
