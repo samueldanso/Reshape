@@ -1,14 +1,8 @@
-<a href="https://reshape-ai.demo.vercel.app">
-  <img alt="Reshape – a GenAI NFT platform for artists, collectors, and vibe creators." src="https://raw.githubusercontent.com/samueldansobelievr/public/banner.png">
-  <h1>Reshape</h1>
-</a>
+# Reshape – a GenAI NFT platform for artists, collectors, and vibe creators
 
-<p>
 Reshape is an AI-powered NFT platform where artists, collectors, and vibe creators can generate, mint, and curate art into unique galleries with the help of a Curator Agent. By combining generative AI with NFTs on Shape L2, it unlocks new creative possibilities while giving collectors verifiable ownership of one-of-a-kind vibes.
 
 Reshape is about giving power back to creators and collectors. With AI as a co-creator and Shape as the foundation, anyone can reshape vibes into art, curate them beautifully, and share them with others.
-
-</p>
 
 ## ✨ Features
 
@@ -120,26 +114,69 @@ Reshape is about giving power back to creators and collectors. With AI as a co-c
 ### Project Structure
 
 ```
-├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   │   ├── get-nfts/     # Fetch NFTs for address
-├── components/            # React components
-│   ├── ui/               # Shadcn/ui components
-│   ├── error-boundary.tsx
-│   ├── loading.tsx
-│   ├── providers.tsx
-│   ├── theme-toggle.tsx
-│   └── wallet-connect.tsx
-├── hooks/                 # Custom React hooks
-│   ├── web3.ts           # Web3 data fetching hooks
-│   ├── use-balance.ts    # Wallet balance hook
-│   ├── use-mobile.ts     # Mobile detection hook
-├── lib/                   # Utility functions and configurations
-│   ├── clients.ts        # Alchemy and RPC clients
-│   ├── config.ts         # Environment configuration
-│   ├── utils.ts          # Helper functions
-│   └── web3.ts           # Wagmi configuration
-└── public/               # Static assets
+├── app/                           # Next.js App Router
+│   ├── api/                      # API routes
+│   │   ├── create/              # AI chat and NFT creation
+│   │   ├── generate-image/      # DALL-E image generation
+│   │   └── call-mcp-tool/       # MCP tool integration
+│   ├── create/                   # NFT creation page
+│   │   └── _components/         # Create page components
+│   │       └── chat-ui.tsx      # Main chat interface
+│   ├── discover/                 # NFT discovery page
+│   │   └── _components/         # Discover page components
+│   │       ├── discover-tabs.tsx # Discovery tabs
+│   │       └── nft-grid.tsx     # NFT grid display
+│   ├── gallery/                  # User gallery page
+│   │   └── _components/         # Gallery page components
+│   │       └── nft-gallery.tsx  # Gallery display
+│   ├── profile/                  # User profile page
+│   ├── bookmarks/                # Bookmarks page
+│   ├── layout.tsx                # Root layout
+│   ├── page.tsx                  # Home page (redirects to /create)
+│   ├── globals.css               # Global styles
+│   ├── error.tsx                 # Error boundary
+│   └── not-found.tsx            # 404 page
+├── components/                    # React components
+│   ├── ui/                       # Shadcn/ui components (40+ components)
+│   │   ├── button.tsx           # Button component
+│   │   ├── card.tsx             # Card component
+│   │   ├── dialog.tsx           # Dialog component
+│   │   ├── form.tsx             # Form components
+│   │   ├── input.tsx            # Input component
+│   │   ├── tabs.tsx             # Tabs component
+│   │   └── ...                  # 30+ more UI components
+│   ├── ai-elements/              # AI chat components
+│   │   ├── conversation.tsx      # Chat conversation
+│   │   ├── message.tsx          # Message display
+│   │   ├── prompt-input.tsx     # Input interface
+│   │   ├── loader.tsx           # Loading states
+│   │   └── ...                  # 8 more AI components
+│   ├── header.tsx                # Site header
+│   ├── sidebar.tsx               # Navigation sidebar
+│   ├── wallet-connect.tsx        # Wallet connection
+│   ├── mint-transaction-handler.tsx # NFT minting handler
+│   ├── providers.tsx             # App providers
+│   └── theme-toggle.tsx          # Theme switcher
+├── hooks/                         # Custom React hooks
+│   ├── use-image-generation.ts   # Image generation hook
+│   ├── use-mcp.ts                # MCP integration hook
+│   ├── use-balance.ts            # Wallet balance hook
+│   ├── use-mobile.ts             # Mobile detection hook
+│   └── web3.ts                   # Web3 utilities
+├── lib/                           # Utility functions and configurations
+│   ├── clients.ts                # Alchemy and RPC clients
+│   ├── config.ts                 # Environment configuration
+│   ├── utils.ts                  # Helper functions
+│   ├── web3.ts                   # Wagmi configuration
+│   └── pinata.ts                 # IPFS upload utilities
+├── types/                         # TypeScript type definitions
+│   └── mcp.ts                    # MCP tool types
+├── public/                        # Static assets
+├── env.ts                         # Environment validation
+├── components.json                # Shadcn/ui configuration
+├── biome.json                     # Linter configuration
+├── tsconfig.json                  # TypeScript configuration
+└── package.json                   # Dependencies and scripts
 ```
 
 ## 🌐 Deployment
@@ -158,6 +195,10 @@ Deploy your repository to [Vercel](https://vercel.com)
 2. Create your feature branch
 3. Commit your changes
 4. Open a Pull Request
+
+## Team
+
+Samuel Danso - Fullstack Engineer
 
 ## Links
 
