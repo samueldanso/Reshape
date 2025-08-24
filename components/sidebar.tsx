@@ -1,74 +1,61 @@
-"use client";
+'use client'
 
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import {
-	Bookmark,
-	Home,
-	ImagePlus,
-	Images,
-	PanelLeftOpen,
-	User,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { useAccount, useDisconnect } from "wagmi";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { Bookmark, Home, ImagePlus, Images, PanelLeftOpen, UserCircle } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import { useAccount, useDisconnect } from 'wagmi'
 
 export function AppSidebar() {
-	const [collapsed, setCollapsed] = useState(false);
-	const pathname = usePathname();
-	const { address, isConnected } = useAccount();
-	const { disconnect } = useDisconnect();
-	const { openConnectModal } = useConnectModal();
+	const [collapsed, setCollapsed] = useState(false)
+	const pathname = usePathname()
+	const { address, isConnected } = useAccount()
+	const { disconnect } = useDisconnect()
+	const { openConnectModal } = useConnectModal()
 
 	// Navigation links configuration
 	const mainNavLinks = [
 		{
-			href: "/",
-			label: "Discover",
+			href: '/',
+			label: 'Discover',
 			icon: Home,
-			isActive: () => pathname === "/",
+			isActive: () => pathname === '/',
 		},
 		{
-			href: "/create",
-			label: "Create",
+			href: '/create',
+			label: 'Create',
 			icon: ImagePlus,
-			isActive: () => pathname.startsWith("/create"),
+			isActive: () => pathname.startsWith('/create'),
 		},
 		{
-			href: "/artists",
-			label: "Artists",
-			icon: User,
-			isActive: () => pathname.startsWith("/artists"),
-		},
-		{
-			href: "/gallery",
-			label: "My Gallery",
+			href: '/gallery',
+			label: 'My Gallery',
 			icon: Images,
-			isActive: () => pathname.startsWith("/gallery"),
+			isActive: () => pathname.startsWith('/gallery'),
 		},
 		{
-			href: "/bookmarks",
-			label: "Bookmarks",
+			href: '/bookmarks',
+			label: 'Bookmarks',
 			icon: Bookmark,
-			isActive: () => pathname.startsWith("/bookmarks"),
+			isActive: () => pathname.startsWith('/bookmarks'),
 		},
-	];
+	]
 
 	const profileLink = {
-		href: "/profile",
-		label: "Profile",
-		icon: User,
-		isActive: () => pathname.startsWith("/profile"),
-	};
+		href: '/profile',
+		label: 'Profile',
+		icon: UserCircle,
+		isActive: () => pathname.startsWith('/profile'),
+	}
 
 	// Handle protected route access
 	function handleProtectedRoute(e: React.MouseEvent, href: string) {
 		if (!isConnected) {
-			e.preventDefault();
-			openConnectModal?.();
+			e.preventDefault()
+			openConnectModal?.()
 		}
 	}
 
@@ -77,10 +64,10 @@ export function AppSidebar() {
 		return (
 			<div
 				className={cn(
-					"flex h-full flex-col transition-all duration-200",
-					"w-16 pl-2",
-					"bg-card rounded-2xl shadow-lg",
-					"mt-1 ml-1 mb-1",
+					'flex h-full flex-col transition-all duration-200',
+					'w-16 pl-2',
+					'bg-card rounded-2xl shadow-lg',
+					'mt-1 ml-1 mb-1'
 				)}
 			>
 				{/* Top: Icon only */}
@@ -105,9 +92,8 @@ export function AppSidebar() {
 
 					{/* Main nav icons */}
 					{mainNavLinks.map((link) => {
-						const isActive = link.isActive();
-						const isProtected =
-							link.label === "My Gallery" || link.label === "Bookmark";
+						const isActive = link.isActive()
+						const isProtected = link.label === 'My Gallery' || link.label === 'Bookmark'
 						return (
 							<Link
 								key={link.href}
@@ -121,16 +107,16 @@ export function AppSidebar() {
 							>
 								<span
 									className={cn(
-										"flex items-center justify-center w-10 h-10 rounded-full transition-colors",
+										'flex items-center justify-center w-10 h-10 rounded-full transition-colors',
 										isActive
-											? "text-foreground bg-accent"
-											: "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+											? 'text-foreground bg-accent'
+											: 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
 									)}
 								>
 									<link.icon className="h-5 w-5 mx-auto" />
 								</span>
 							</Link>
-						);
+						)
 					})}
 				</nav>
 
@@ -147,16 +133,16 @@ export function AppSidebar() {
 					</Link>
 				</div>
 			</div>
-		);
+		)
 	}
 
 	// Expanded sidebar view
 	return (
 		<div
 			className={cn(
-				"flex h-full flex-col transition-all duration-200",
-				"w-64 pl-2",
-				"bg-card rounded-2xl shadow-lg mt-1 ml-1 mb-1",
+				'flex h-full flex-col transition-all duration-200',
+				'w-64 pl-2',
+				'bg-card rounded-2xl shadow-lg mt-1 ml-1 mb-1'
 			)}
 		>
 			{/* Top: Logo and toggle */}
@@ -179,29 +165,26 @@ export function AppSidebar() {
 			<nav className="flex-1 flex flex-col gap-2 mt-6">
 				{/* Main Navigation */}
 				{mainNavLinks.map((link) => {
-					const isActive = link.isActive();
-					const isProtected =
-						link.label === "My Gallery" || link.label === "Bookmark";
+					const isActive = link.isActive()
+					const isProtected = link.label === 'My Gallery' || link.label === 'Bookmark'
 					return (
 						<Link
 							key={link.href}
 							href={link.href}
 							className={cn(
-								"flex items-center gap-3 rounded-lg px-4 py-2 font-medium transition-colors",
+								'flex items-center gap-3 rounded-lg px-4 py-2 font-medium transition-colors',
 								isActive
-									? "text-foreground font-semibold bg-accent"
-									: "text-muted-foreground hover:bg-muted hover:text-foreground",
+									? 'text-foreground font-semibold bg-accent'
+									: 'text-muted-foreground hover:bg-muted hover:text-foreground'
 							)}
 							onClick={
-								isProtected
-									? (e) => handleProtectedRoute(e, link.href)
-									: undefined
+								isProtected ? (e) => handleProtectedRoute(e, link.href) : undefined
 							}
 						>
 							<link.icon className="h-5 w-5" />
 							<span>{link.label}</span>
 						</Link>
-					);
+					)
 				})}
 			</nav>
 
@@ -217,5 +200,5 @@ export function AppSidebar() {
 				</Link>
 			</div>
 		</div>
-	);
+	)
 }
