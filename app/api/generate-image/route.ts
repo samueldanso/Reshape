@@ -1,6 +1,6 @@
 import { env } from '@/env'
 import { uploadFileToIPFS } from '@/lib/pinata'
-import { openai } from '@ai-sdk/openai'
+import OpenAI from 'openai'
 
 export const maxDuration = 60
 
@@ -12,21 +12,27 @@ export async function POST(req: Request) {
 			return Response.json({ error: 'Prompt is required' }, { status: 400 })
 		}
 
+		// Initialize OpenAI with API key from environment
+		const openai = new OpenAI({
+			apiKey: env.OPENAI_API_KEY,
+		})
+
 		// Step 1: Generate image using OpenAI DALL-E 3
 		console.log('🎨 Generating image for prompt:', prompt)
 
-		const imageResponse = await openai.image('dall-e-3').generate({
+		const imageResponse = await openai.images.generate({
+			model: 'dall-e-3',
 			prompt: `${prompt}. High quality digital art, vibrant colors, detailed composition, professional artwork.`,
 			size: '1024x1024',
 			quality: 'standard',
-			responseFormat: 'b64_json',
+			response_format: 'b64_json',
 		})
 
-		if (!imageResponse.images || imageResponse.images.length === 0) {
+		if (!imageResponse.data || imageResponse.data.length === 0) {
 			throw new Error('Failed to generate image')
 		}
 
-		const base64Image = imageResponse.images[0].b64_json
+		const base64Image = imageResponse.data[0].b64_json
 		if (!base64Image) {
 			throw new Error('No image data received')
 		}
