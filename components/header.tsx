@@ -1,12 +1,12 @@
 "use client";
 
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAccount } from "wagmi";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { WalletConnect } from "@/components/wallet-connect";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useRouter } from "next/navigation";
-import { useAccount } from "wagmi";
-import { Plus } from "lucide-react";
 
 export function Header() {
 	const { isConnected } = useAccount();

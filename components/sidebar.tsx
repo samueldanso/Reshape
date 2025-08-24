@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
 	Bookmark,
@@ -15,6 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
+import { cn } from "@/lib/utils";
 
 export function AppSidebar() {
 	const [collapsed, setCollapsed] = useState(false);

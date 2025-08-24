@@ -1,3 +1,6 @@
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { ChatInterface } from "@/components/chat-interface";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -6,8 +9,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 
 export default function Home() {
 	return (
@@ -81,6 +82,11 @@ export default function Home() {
 						Shape Docs
 					</Link>
 				</Button>
+			</div>
+
+			{/* AI Integration Test */}
+			<div className="w-full max-w-6xl">
+				<ChatInterface />
 			</div>
 		</div>
 	);
