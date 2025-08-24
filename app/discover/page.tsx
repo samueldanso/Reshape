@@ -1,4 +1,4 @@
-import { DiscoverTabs } from "./_components/discover-tabs";
+import { DiscoverTabs } from './_components/discover-tabs'
 
 export default function DiscoverPage() {
 	return (
@@ -15,5 +15,5 @@ export default function DiscoverPage() {
 				<DiscoverTabs />
 			</div>
 		</div>
-	);
+	)
 }

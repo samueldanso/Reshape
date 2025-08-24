@@ -26,7 +26,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { PrepareMintSVGNFTData } from "@/types/mcp";
-import { MintTransactionHandler } from "./mint-transaction-handler";
+import { MintTransactionHandler } from "../../../components/mint-transaction-handler";
 
 export function ChatInterface() {
 	const { isConnected } = useAccount();

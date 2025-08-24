@@ -1,16 +1,14 @@
-"use client";
+'use client'
 
-import { Search } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input'
+import { Search } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 export const SearchBar = () => {
-	const [query, setQuery] = useState("");
-	const [isOpen, setIsOpen] = useState(false);
-	const inputRef = useRef<HTMLInputElement>(null);
-	const dropdownRef = useRef<HTMLDivElement>(null);
-	const router = useRouter();
+	const [query, setQuery] = useState('')
+	const [isOpen, setIsOpen] = useState(false)
+	const inputRef = useRef<HTMLInputElement>(null)
+	const dropdownRef = useRef<HTMLDivElement>(null)
 
 	// Close dropdown when clicking outside
 	useEffect(() => {
@@ -20,32 +18,26 @@ export const SearchBar = () => {
 				!dropdownRef.current.contains(event.target as Node) &&
 				!inputRef.current?.contains(event.target as Node)
 			) {
-				setIsOpen(false);
+				setIsOpen(false)
 			}
-		};
+		}
 
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
-	}, []);
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => document.removeEventListener('mousedown', handleClickOutside)
+	}, [])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		setQuery(value);
-		setIsOpen(value.trim().length > 0);
-	};
+		const value = e.target.value
+		setQuery(value)
+		setIsOpen(value.trim().length > 0)
+	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if (e.key === "Escape") {
-			setIsOpen(false);
-			inputRef.current?.blur();
+		if (e.key === 'Escape') {
+			setIsOpen(false)
+			inputRef.current?.blur()
 		}
-		if (e.key === "Enter" && query.trim()) {
-			// Navigate to search results
-			router.push(`/search?q=${encodeURIComponent(query.trim())}`);
-			setIsOpen(false);
-			setQuery("");
-		}
-	};
+	}
 
 	return (
 		<div className="relative w-80">
@@ -68,10 +60,10 @@ export const SearchBar = () => {
 					className="absolute left-0 top-13 z-50 max-h-80 w-full overflow-y-auto rounded-lg border border-border bg-popover shadow-lg"
 				>
 					<div className="p-4 text-center text-muted-foreground">
-						Press Enter to search for "{query}"
+						Search functionality coming soon...
 					</div>
 				</div>
 			)}
 		</div>
-	);
-};
+	)
+}
