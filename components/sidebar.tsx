@@ -44,7 +44,7 @@ export function AppSidebar() {
 		},
 		{
 			href: '/bookmarks',
-			label: 'Bookmark',
+			label: 'Bookmarks',
 			icon: Bookmark,
 			isActive: () => pathname.startsWith('/bookmarks'),
 		},
