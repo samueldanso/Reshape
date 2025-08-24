@@ -6,11 +6,11 @@ import { DiscoverTabs } from './_components/discover-tabs'
 export default function DiscoverPage() {
 	return (
 		<div className="min-h-screen bg-background">
-			{/* Clean Header with Centered Search */}
+			{/* Clean Header with Perfectly Centered Search */}
 			<header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 				<div className="container mx-auto px-4 py-4">
-					<div className="flex flex-col items-center space-y-4 md:flex-row md:justify-between md:space-y-0">
-						{/* Logo and Title */}
+					<div className="flex items-center justify-between">
+						{/* Left Side - Logo */}
 						<div className="flex items-center space-x-3">
 							<div className="size-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
 								<span className="text-white font-bold text-sm">R</span>
@@ -18,16 +18,18 @@ export default function DiscoverPage() {
 							<h1 className="text-xl font-bold text-foreground">Reshape</h1>
 						</div>
 
-						{/* Centered Search Bar */}
-						<div className="relative w-full max-w-md">
-							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-							<Input
-								placeholder="Search for inspiration..."
-								className="w-full pl-10 bg-muted/50 border-0 focus:bg-background transition-colors"
-							/>
+						{/* Center - Search Bar */}
+						<div className="absolute left-1/2 transform -translate-x-1/2">
+							<div className="relative w-80">
+								<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+								<Input
+									placeholder="Search for inspiration..."
+									className="w-full pl-10 bg-muted/50 border-0 focus:bg-background transition-colors"
+								/>
+							</div>
 						</div>
 
-						{/* Right Side Actions */}
+						{/* Right Side - Actions */}
 						<div className="flex items-center space-x-4">
 							{/* Desktop Actions */}
 							<div className="hidden md:flex items-center space-x-4">

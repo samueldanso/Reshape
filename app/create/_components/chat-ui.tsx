@@ -127,11 +127,34 @@ export function ChatInterface() {
 
 	const handleTransactionComplete = useCallback((hash: string) => {
 		console.log('Transaction completed:', hash)
+
+		// Show success with explorer links
 		toast.success('🎉 NFT Minted Successfully!', {
-			description: `Your NFT has been minted on Shape Network. Hash: ${hash.slice(0, 8)}...`,
-			duration: 6000,
+			description: `Your NFT has been minted on Shape Network!`,
+			duration: 8000,
+			action: {
+				label: 'View on Explorer',
+				onClick: () => {
+					window.open(`https://explorer.shape.org/tx/${hash}`, '_blank')
+				},
+			},
 		})
+
 		setPendingTransaction(null)
+
+		// Show instruction to refresh gallery
+		setTimeout(() => {
+			toast.info('🔄 Refresh Your Gallery', {
+				description: 'Visit your gallery to see your newly minted NFT!',
+				duration: 5000,
+				action: {
+					label: 'Go to Gallery',
+					onClick: () => {
+						window.location.href = '/gallery'
+					},
+				},
+			})
+		}, 2000)
 	}, [])
 
 	const handleTransactionError = useCallback((error: string) => {
@@ -145,21 +168,21 @@ export function ChatInterface() {
 
 	if (!isConnected) {
 		return (
-			<div className="w-full text-center py-20">
+			<div className="w-full text-center py-8">
 				<div className="max-w-md mx-auto">
-					<div className="size-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-						<Wallet className="h-12 w-12 text-white" />
+					<div className="size-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+						<Wallet className="h-10 w-10 text-white" />
 					</div>
-					<h2 className="text-3xl font-bold text-foreground mb-4">Connect Your Wallet</h2>
-					<p className="text-muted-foreground mb-8 text-lg leading-relaxed">
+					<h2 className="text-2xl font-bold text-foreground mb-3">Connect Your Wallet</h2>
+					<p className="text-muted-foreground mb-6 text-base leading-relaxed">
 						Connect your wallet to start creating AI-generated NFTs with the Curator
 						Agent
 					</p>
-					<div className="bg-muted/30 rounded-xl p-6 border border-border/50">
-						<p className="text-sm text-muted-foreground mb-4">
+					<div className="bg-muted/30 rounded-xl p-4 border border-border/50">
+						<p className="text-sm text-muted-foreground mb-3">
 							💡 <strong>How it works:</strong>
 						</p>
-						<ul className="text-sm text-muted-foreground space-y-2 text-left">
+						<ul className="text-sm text-muted-foreground space-y-1 text-left">
 							<li>• Connect your wallet in the top right corner</li>
 							<li>• Describe your vision to the AI</li>
 							<li>• Generate and mint unique NFTs</li>
@@ -172,22 +195,22 @@ export function ChatInterface() {
 	}
 
 	return (
-		<div className="w-full space-y-6">
+		<div className="w-full space-y-4">
 			<div className="text-center">
-				<h2 className="text-2xl font-semibold text-foreground mb-2">
+				<h2 className="text-xl font-semibold text-foreground mb-2">
 					Chat with the Curator Agent
 				</h2>
-				<p className="text-muted-foreground">
+				<p className="text-sm text-muted-foreground">
 					Describe your vision and let AI create your NFT
 				</p>
 			</div>
 
-			<Conversation className="h-[500px] border rounded-xl bg-background">
+			<Conversation className="h-[400px] border rounded-xl bg-background">
 				<ConversationContent>
 					{messages.length === 0 && (
-						<div className="text-muted-foreground py-12 text-center">
-							<Bot className="mx-auto mb-4 h-16 w-16 opacity-50" />
-							<p className="text-xl font-medium mb-3">Ready to create your NFT?</p>
+						<div className="text-muted-foreground py-8 text-center">
+							<Bot className="mx-auto mb-3 h-12 w-12 opacity-50" />
+							<p className="text-lg font-medium mb-2">Ready to create your NFT?</p>
 							<p className="text-sm max-w-md mx-auto">
 								Describe your vision below and the Curator Agent will help you
 								create a unique NFT. Be specific about style, mood, colors, and what
@@ -236,22 +259,27 @@ export function ChatInterface() {
 															)
 
 															if (hasNFTData) {
+																console.log(
+																	'🎉 NFT Data Found!',
+																	message.parts
+																)
 																return (
 																	<div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg border-2 border-green-200 dark:border-green-800 p-6 text-center">
 																		<div className="size-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
 																			<Image className="size-8 text-green-600 dark:text-green-400" />
 																		</div>
 																		<p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
-																			NFT Generated
-																			Successfully! 🎉
+																			🎉 NFT Generated
+																			Successfully!
 																		</p>
 																		<p className="text-xs text-green-600 dark:text-green-400 mb-4">
 																			Your AI-generated NFT is
-																			ready to mint
+																			ready to mint on Shape
+																			Network!
 																		</p>
 																		<div className="bg-white dark:bg-gray-800 rounded-lg p-3 text-left mb-4">
 																			<p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-																				Ready to mint on
+																				🚀 Ready to mint on
 																				Shape Network
 																			</p>
 																			<p className="text-xs text-gray-500 dark:text-gray-400">
@@ -291,7 +319,7 @@ export function ChatInterface() {
 																								parsed as PrepareMintSVGNFTData
 																							)
 																							toast.success(
-																								'NFT ready to mint! Check the minting interface below.'
+																								'🎉 NFT ready to mint! Check the minting interface below.'
 																							)
 																						}
 																					} catch (e) {
@@ -300,7 +328,7 @@ export function ChatInterface() {
 																							e
 																						)
 																						toast.error(
-																							'Failed to prepare NFT for minting. Please try again.'
+																							'Failed to prepare NFT for minting'
 																						)
 																					}
 																				}
@@ -419,7 +447,25 @@ export function ChatInterface() {
 					))}
 
 					{pendingTransaction && (
-						<div className="mt-4">
+						<div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+							<div className="text-center mb-4">
+								<div className="flex items-center justify-center gap-2 mb-2">
+									<Sparkles className="size-6 text-blue-600" />
+									<h3 className="text-xl font-bold text-foreground">
+										🚀 Mint Your NFT on Shape Network
+									</h3>
+								</div>
+								<p className="text-sm text-muted-foreground mb-3">
+									Your AI-generated NFT is ready to be minted on Shape Network
+								</p>
+								<div className="bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3 text-center">
+									<p className="text-xs text-blue-700 dark:text-blue-300">
+										💡 <strong>Note:</strong> You'll need to sign a transaction
+										with your wallet to mint. This creates a permanent record on
+										Shape Network and you'll earn gasback rewards!
+									</p>
+								</div>
+							</div>
 							<MintTransactionHandler
 								transaction={pendingTransaction}
 								onComplete={handleTransactionComplete}
@@ -498,43 +544,31 @@ export function ChatInterface() {
 								</div>
 							</div>
 
-							<div className="flex flex-wrap gap-2">
-								<Button
-									variant="outline"
-									size="sm"
-									onClick={() => {
-										const link = document.createElement('a')
-										link.href = `data:image/png;base64,${generatedImage.base64}`
-										link.download = 'ai-generated-artwork.png'
-										link.click()
-									}}
-									className="flex items-center gap-2"
-								>
-									<Download className="size-4" />
-									Download
-								</Button>
-
-								<Button
-									variant="outline"
-									size="sm"
-									onClick={() => {
-										navigator.clipboard.writeText(generatedImage.gatewayUrl)
-										toast.success('🔗 Gateway URL copied to clipboard!')
-									}}
-									className="flex items-center gap-2"
-								>
-									<ExternalLink className="size-4" />
-									Copy URL
-								</Button>
-
-								<Button
-									variant="outline"
-									size="sm"
-									onClick={clearGeneratedImage}
-									className="flex items-center gap-2"
-								>
-									Clear
-								</Button>
+							{/* Explorer Links */}
+							<div className="pt-4 border-t border-border/50">
+								<h4 className="font-medium text-foreground mb-2">
+									🔍 View on Block Explorers
+								</h4>
+								<div className="flex flex-wrap gap-2">
+									<a
+										href={`https://explorer.shape.org/tx/${generatedImage.ipfsHash}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="inline-flex items-center gap-2 px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors"
+									>
+										<ExternalLink className="size-3" />
+										Shape Explorer
+									</a>
+									<a
+										href={`https://ipfs.io/ipfs/${generatedImage.ipfsHash}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="inline-flex items-center gap-2 px-3 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-lg hover:bg-purple-200 dark:hover:bg-purple-800/50 transition-colors"
+									>
+										<ExternalLink className="size-3" />
+										IPFS Gateway
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -551,175 +585,90 @@ export function ChatInterface() {
 				</Alert>
 			)}
 
-			<div className="mt-8">
-				<div className="text-center mb-8">
-					<h3 className="text-xl font-semibold text-foreground mb-3">✨ Get Inspired</h3>
-					<p className="text-sm text-muted-foreground mb-6">
-						Choose a template or describe your vision
-					</p>
-
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
-						<div
-							className="aspect-square bg-muted/50 rounded-xl border-2 border-dashed border-muted-foreground/30 flex items-center justify-center cursor-pointer hover:bg-muted/70 transition-all duration-200 hover:scale-105 group"
-							onClick={handleTemplateClick}
-						>
-							<div className="text-center">
-								<Image className="size-8 text-muted-foreground mx-auto mb-2 group-hover:text-foreground transition-colors" />
-								<span className="text-xs font-medium text-muted-foreground group-hover:text-foreground">
-									Templates
+			{/* Prompt Input - Now directly visible without scrolling */}
+			<PromptInput
+				onSubmit={handleSubmit}
+				className="shadow-lg border border-border/50 rounded-xl overflow-hidden"
+			>
+				<PromptInputTextarea
+					value={input}
+					onChange={handleInputChange}
+					placeholder="Describe the image you want to create..."
+					className="text-lg font-medium placeholder:font-bold placeholder:text-foreground/80 min-h-[120px] resize-none"
+					disabled={isGenerating}
+				/>
+				<PromptInputToolbar className="bg-muted/30 border-t border-border/50">
+					<PromptInputTools>
+						{/* Show generated image thumbnail when available */}
+						{generatedImage && (
+							<div className="flex items-center space-x-2 mr-2">
+								<div className="size-8 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 border border-border/50 flex items-center justify-center">
+									<img
+										src={`data:image/png;base64,${generatedImage.base64}`}
+										alt="Generated"
+										className="size-6 rounded object-cover"
+									/>
+								</div>
+								<span className="text-xs text-muted-foreground font-medium">
+									Artwork Ready
 								</span>
 							</div>
-						</div>
-						<div className="aspect-square bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-border/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-200 hover:shadow-md">
-							<span className="text-xs font-medium text-center px-3 text-blue-700 dark:text-blue-300">
-								Abstract
-								<br />
-								Vibes
-							</span>
-						</div>
-						<div className="aspect-square bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/20 dark:to-teal-900/20 rounded-xl border border-border/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-200 hover:shadow-md">
-							<span className="text-xs font-medium text-center px-3 text-green-700 dark:text-green-300">
-								Nature
-								<br />
-								Scapes
-							</span>
-						</div>
-						<div className="aspect-square bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900/20 dark:to-orange-900/20 rounded-xl border border-border/50 flex items-center justify-center cursor-pointer hover:scale-105 transition-all duration-200 hover:shadow-md">
-							<span className="text-xs font-medium text-center px-3 text-orange-700 dark:text-orange-300">
-								Digital
-								<br />
-								Art
-							</span>
-						</div>
-					</div>
+						)}
 
-					<div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-xl p-6 border border-border/50 max-w-2xl mx-auto">
-						<h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-							<Sparkles className="size-5 text-blue-600" />
-							How It Works
-						</h4>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-							<div className="text-center">
-								<div className="size-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
-									<span className="text-lg font-bold text-blue-600">1</span>
-								</div>
-								<p className="font-medium text-foreground mb-1">
-									Describe Your Vision
-								</p>
-								<p className="text-xs text-muted-foreground">
-									Tell us what you want to create
-								</p>
-							</div>
-							<div className="text-center">
-								<div className="size-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
-									<span className="text-lg font-bold text-purple-600">2</span>
-								</div>
-								<p className="font-medium text-foreground mb-1">AI Generates Art</p>
-								<p className="text-xs text-muted-foreground">
-									DALL-E 3 creates your artwork
-								</p>
-							</div>
-							<div className="text-center">
-								<div className="size-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
-									<span className="text-lg font-bold text-green-600">3</span>
-								</div>
-								<p className="font-medium text-foreground mb-1">Mint as NFT</p>
-								<p className="text-xs text-muted-foreground">
-									Store on Shape Network
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<p className="text-sm text-muted-foreground mt-6">
-						Start typing below to describe your vision...
-					</p>
-				</div>
-
-				<PromptInput
-					onSubmit={handleSubmit}
-					className="shadow-lg border border-border/50 rounded-xl overflow-hidden"
-				>
-					<PromptInputTextarea
-						value={input}
-						onChange={handleInputChange}
-						placeholder="Describe the image you want to create..."
-						className="text-lg font-medium placeholder:font-bold placeholder:text-foreground/80 min-h-[120px] resize-none"
-						disabled={isGenerating}
-					/>
-					<PromptInputToolbar className="bg-muted/30 border-t border-border/50">
-						<PromptInputTools>
-							{/* Show generated image thumbnail when available */}
-							{generatedImage && (
-								<div className="flex items-center space-x-2 mr-2">
-									<div className="size-8 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 border border-border/50 flex items-center justify-center">
-										<img
-											src={`data:image/png;base64,${generatedImage.base64}`}
-											alt="Generated"
-											className="size-6 rounded object-cover"
-										/>
-									</div>
-									<span className="text-xs text-muted-foreground font-medium">
-										Artwork Ready
-									</span>
-								</div>
-							)}
-
-							<PromptInputButton
-								variant="ghost"
-								size="sm"
-								onClick={handleTemplateClick}
-								className="text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg px-3 py-2"
-								disabled={isGenerating}
-							>
-								<Image className="size-4 mr-2" />
-								<span className="hidden sm:inline">Template</span>
-							</PromptInputButton>
-
-							<PromptInputModelSelect
-								value={selectedModel}
-								onValueChange={setSelectedModel}
-							>
-								<PromptInputModelSelectTrigger className="text-sm bg-background border border-border/50 hover:bg-muted/50">
-									<PromptInputModelSelectValue />
-								</PromptInputModelSelectTrigger>
-								<PromptInputModelSelectContent>
-									<PromptInputModelSelectItem value="gpt-4o">
-										GPT-4o
-									</PromptInputModelSelectItem>
-								</PromptInputModelSelectContent>
-							</PromptInputModelSelect>
-
-							<PromptInputButton
-								variant="ghost"
-								size="sm"
-								onClick={() => {
-									setInput('')
-									clearGeneratedImage()
-								}}
-								className="text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg px-3 py-2"
-								disabled={isGenerating}
-							>
-								Clear
-							</PromptInputButton>
-						</PromptInputTools>
-
-						<PromptInputSubmit
-							className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0 shadow-sm px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-							disabled={isGenerating || !input.trim()}
+						<PromptInputButton
+							variant="ghost"
+							size="sm"
+							onClick={handleTemplateClick}
+							className="text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg px-3 py-2"
+							disabled={isGenerating}
 						>
-							{isGenerating ? (
-								<>
-									<Loader className="size-4 mr-2 animate-spin" />
-									Generating...
-								</>
-							) : (
-								'Create Artwork'
-							)}
-						</PromptInputSubmit>
-					</PromptInputToolbar>
-				</PromptInput>
-			</div>
+							<Image className="size-4 mr-2" />
+							<span className="hidden sm:inline">Template</span>
+						</PromptInputButton>
+
+						<PromptInputModelSelect
+							value={selectedModel}
+							onValueChange={setSelectedModel}
+						>
+							<PromptInputModelSelectTrigger className="text-sm bg-background border border-border/50 hover:bg-muted/50">
+								<PromptInputModelSelectValue />
+							</PromptInputModelSelectTrigger>
+							<PromptInputModelSelectContent>
+								<PromptInputModelSelectItem value="gpt-4o">
+									GPT-4o
+								</PromptInputModelSelectItem>
+							</PromptInputModelSelectContent>
+						</PromptInputModelSelect>
+
+						<PromptInputButton
+							variant="ghost"
+							size="sm"
+							onClick={() => {
+								setInput('')
+								clearGeneratedImage()
+							}}
+							className="text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg px-3 py-2"
+							disabled={isGenerating}
+						>
+							Clear
+						</PromptInputButton>
+					</PromptInputTools>
+
+					<PromptInputSubmit
+						className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0 shadow-sm px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+						disabled={isGenerating || !input.trim()}
+					>
+						{isGenerating ? (
+							<>
+								<Loader className="size-4 mr-2 animate-spin" />
+								Generating...
+							</>
+						) : (
+							'Create Artwork'
+						)}
+					</PromptInputSubmit>
+				</PromptInputToolbar>
+			</PromptInput>
 		</div>
 	)
 }
