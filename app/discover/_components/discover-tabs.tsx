@@ -166,7 +166,7 @@ function GasbackCalculator() {
 						max="1000"
 						value={transactions}
 						onChange={(e) => setTransactions(Number(e.target.value))}
-						className="flex-1 h-2 bg-muted rounded-lg appearance-none cursor-pointer slider"
+						className="flex-1 h-2 bg-muted rounded-lg appearance-none cursor-pointer"
 					/>
 					<span className="text-sm font-medium min-w-[60px] text-right">
 						{transactions} txs
@@ -184,7 +184,7 @@ function GasbackCalculator() {
 						step="10000"
 						value={avgGas}
 						onChange={(e) => setAvgGas(Number(e.target.value))}
-						className="flex-1 h-2 bg-muted rounded-lg appearance-none cursor-pointer slider"
+						className="flex-1 h-2 bg-muted rounded-lg appearance-none cursor-pointer"
 					/>
 					<span className="text-sm font-medium min-w-[80px] text-right">
 						{avgGas.toLocaleString()} gas
