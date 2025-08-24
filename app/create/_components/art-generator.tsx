@@ -1,15 +1,15 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { useAccount } from 'wagmi'
+import { Textarea } from '@/components/ui/textarea'
 import { usePrepareMintSVGNFT } from '@/hooks/use-mcp'
 import { Bot, Image, Sparkles, Wallet } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
+import { useAccount } from 'wagmi'
 
 export function ArtGenerator() {
 	const { isConnected } = useAccount()
@@ -27,17 +27,17 @@ export function ArtGenerator() {
 		}
 
 		setIsGenerating(true)
-		
+
 		try {
 			// For MVP: Generate a simple SVG based on prompt
 			// In production: This would call OpenAI DALL-E or similar
 			const svg = generateSimpleSVG(prompt)
 			setGeneratedImage(svg)
-			
+
 			// Auto-fill NFT details
 			setNftName(`${prompt} NFT`)
 			setNftDescription(`AI-generated artwork based on: ${prompt}`)
-			
+
 			toast.success('Art generated successfully!')
 		} catch (error) {
 			toast.error('Failed to generate art')
@@ -51,7 +51,7 @@ export function ArtGenerator() {
 		// Simple SVG generation for MVP - replace with AI generation
 		const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
 		const color = colors[Math.floor(Math.random() * colors.length)]
-		
+
 		return `
 			<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
 				<rect width="400" height="400" fill="${color}"/>
@@ -106,8 +106,8 @@ export function ArtGenerator() {
 							className="min-h-[100px]"
 						/>
 					</div>
-					<Button 
-						onClick={generateArt} 
+					<Button
+						onClick={generateArt}
 						disabled={isGenerating || !prompt.trim()}
 						className="w-full"
 					>
@@ -137,12 +137,12 @@ export function ArtGenerator() {
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="flex justify-center">
-							<div 
+							<div
 								className="border rounded-lg p-4 bg-white"
 								dangerouslySetInnerHTML={{ __html: generatedImage }}
 							/>
 						</div>
-						
+
 						{/* NFT Details Form */}
 						<div className="space-y-4">
 							<div className="space-y-2">
