@@ -1,4 +1,7 @@
+
 # Reshape – a GenAI NFT platform for artists, collectors, and vibe creators
+
+[Video Demo](https://youtu.be/Vh3QUNtzXGo)
 
 Reshape is an AI-powered NFT platform where artists, collectors, and vibe creators can generate, mint, and curate art into unique galleries with the help of a Curator Agent. By combining generative AI with NFTs on Shape L2, it unlocks new creative possibilities while giving collectors verifiable ownership of one-of-a-kind vibes.
 
