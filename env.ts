@@ -1,5 +1,5 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs'
+import { z } from 'zod'
 
 export const env = createEnv({
 	server: {
@@ -10,15 +10,16 @@ export const env = createEnv({
 		NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: z.string().min(1),
 		NEXT_PUBLIC_ALCHEMY_KEY: z.string().min(1),
 		NEXT_PUBLIC_GATEWAY_URL: z.string().min(1),
-		NEXT_PUBLIC_CHAIN_ID: z.string().default("11011"),
+		NEXT_PUBLIC_CHAIN_ID: z.string().default('11011'),
+		NEXT_PUBLIC_MCP_SERVER_URL: z.string().default('https://shape-mcp-server.vercel.app/mcp'),
 	},
 	runtimeEnv: {
 		PINATA_JWT: process.env.PINATA_JWT,
 		OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-		NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
-			process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+		NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
 		NEXT_PUBLIC_ALCHEMY_KEY: process.env.NEXT_PUBLIC_ALCHEMY_KEY,
 		NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
 		NEXT_PUBLIC_GATEWAY_URL: process.env.NEXT_PUBLIC_GATEWAY_URL,
+		NEXT_PUBLIC_MCP_SERVER_URL: process.env.NEXT_PUBLIC_MCP_SERVER_URL,
 	},
-});
+})
