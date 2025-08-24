@@ -1,4 +1,4 @@
-import { ChatInterface } from '@/components/chat-interface'
+import { ChatInterface } from "@/components/chat-interface";
 
 export default function Home() {
 	return (
@@ -11,8 +11,8 @@ export default function Home() {
 					AI-powered NFT platform for vibe artists on Shape Network
 				</p>
 				<p className="text-muted-foreground max-w-xl text-base">
-					Create, mint, and manage your NFTs with AI assistance. Connect your wallet to
-					get started.
+					Create, mint, and manage your NFTs with AI assistance. Connect your
+					wallet to get started.
 				</p>
 			</div>
 
@@ -21,5 +21,5 @@ export default function Home() {
 				<ChatInterface />
 			</div>
 		</div>
-	)
+	);
 }

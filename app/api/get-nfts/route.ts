@@ -1,13 +1,13 @@
-import { alchemy } from '@/lib/clients'
-import { type NextRequest, NextResponse } from 'next/server'
-import { type Address, isAddress } from 'viem'
-import { z } from 'zod'
+import { type NextRequest, NextResponse } from "next/server";
+import { type Address, isAddress } from "viem";
+import { z } from "zod";
+import { alchemy } from "@/lib/clients";
 
 const getNftsSchema = z.object({
 	address: z.string().refine((val) => isAddress(val), {
-		message: 'Invalid Ethereum address format',
+		message: "Invalid Ethereum address format",
 	}),
-})
+});
 
 /**
  * Example API route to fetch NFTs for a user
@@ -16,32 +16,35 @@ const getNftsSchema = z.object({
  */
 export async function POST(request: NextRequest) {
 	try {
-		const body = await request.json()
+		const body = await request.json();
 
-		const validation = getNftsSchema.safeParse(body)
+		const validation = getNftsSchema.safeParse(body);
 		if (!validation.success) {
 			return NextResponse.json(
 				{
-					error: 'Validation failed',
+					error: "Validation failed",
 					details: validation.error.issues,
 				},
-				{ status: 400 }
-			)
+				{ status: 400 },
+			);
 		}
 
-		const { address } = validation.data
+		const { address } = validation.data;
 
 		const nfts = await alchemy.nft.getNftsForOwner(address as Address, {
-			contractAddresses: ['example-contract-address'],
-		})
+			contractAddresses: ["example-contract-address"],
+		});
 
 		return NextResponse.json({
 			success: true,
 			data: nfts,
 			address,
-		})
+		});
 	} catch (error) {
-		console.error('Error fetching NFTs:', error)
-		return NextResponse.json({ error: 'Failed to fetch NFTs' }, { status: 500 })
+		console.error("Error fetching NFTs:", error);
+		return NextResponse.json(
+			{ error: "Failed to fetch NFTs" },
+			{ status: 500 },
+		);
 	}
 }
