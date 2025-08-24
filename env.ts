@@ -10,7 +10,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: z.string().min(1),
 		NEXT_PUBLIC_ALCHEMY_KEY: z.string().min(1),
 		NEXT_PUBLIC_GATEWAY_URL: z.string().min(1),
-		NEXT_PUBLIC_CHAIN_ID: z.number().min(1),
+		NEXT_PUBLIC_CHAIN_ID: z.string().default('11011'),
 	},
 	runtimeEnv: {
 		PINATA_JWT: process.env.PINATA_JWT,
