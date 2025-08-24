@@ -1,9 +1,9 @@
 'use client'
 
-import { useAccount } from 'wagmi'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Wallet, User, Construction } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Construction, User, Wallet } from 'lucide-react'
+import { useAccount } from 'wagmi'
 
 export function ProfileView() {
 	const { isConnected } = useAccount()
@@ -45,9 +45,7 @@ export function ProfileView() {
 					User profiles and statistics will be available in the next update
 				</p>
 				<Button asChild>
-					<a href="/create">
-						Start Creating NFTs
-					</a>
+					<a href="/create">Start Creating NFTs</a>
 				</Button>
 			</CardContent>
 		</Card>
