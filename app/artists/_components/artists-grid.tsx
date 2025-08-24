@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useQuery } from '@tanstack/react-query'
-import { ExternalLink, Image, User, Users } from 'lucide-react'
+import { useQuery } from "@tanstack/react-query";
+import { ExternalLink, Image, User, Users } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Artist {
-	id: string
-	address: string
-	name: string
-	avatar: string
-	collectionCount: number
-	nftCount: number
-	followers: number
+	id: string;
+	address: string;
+	name: string;
+	avatar: string;
+	collectionCount: number;
+	nftCount: number;
+	followers: number;
 	topNFTs: Array<{
-		id: string
-		name: string
-		image: string
-	}>
+		id: string;
+		name: string;
+		image: string;
+	}>;
 }
 
 export function ArtistsGrid() {
@@ -29,51 +29,53 @@ export function ArtistsGrid() {
 		isLoading,
 		error,
 	} = useQuery({
-		queryKey: ['top-artists'],
+		queryKey: ["top-artists"],
 		queryFn: async (): Promise<Artist[]> => {
 			try {
 				// For MVP: Return mock data
 				// In production: Use getTopShapeCreators MCP tool
 				return [
 					{
-						id: '1',
-						address: '0x1234...5678',
-						name: 'VibeMaster',
-						avatar: '',
+						id: "1",
+						address: "0x1234...5678",
+						name: "VibeMaster",
+						avatar: "",
 						collectionCount: 3,
 						nftCount: 25,
 						followers: 156,
 						topNFTs: [
 							{
-								id: '1',
-								name: 'Cosmic Dreams',
-								image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzQ1QjdEMSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNDAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjgiLz48L3N2Zz4=',
+								id: "1",
+								name: "Cosmic Dreams",
+								image:
+									"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzQ1QjdEMSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNDAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjgiLz48L3N2Zz4=",
 							},
 						],
 					},
 					{
-						id: '2',
-						address: '0x8765...4321',
-						name: 'DigitalDreamer',
-						avatar: '',
+						id: "2",
+						address: "0x8765...4321",
+						name: "DigitalDreamer",
+						avatar: "",
 						collectionCount: 2,
 						nftCount: 18,
 						followers: 89,
 						topNFTs: [
 							{
-								id: '2',
-								name: 'Neon Nights',
-								image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0ZGNkI2QiIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNDAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjgiLz48L3N2Zz4=',
+								id: "2",
+								name: "Neon Nights",
+								image:
+									"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0ZGNkI2QiIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNDAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjgiLz48L3N2Zz4=",
 							},
 						],
 					},
-				]
+				];
 			} catch (error) {
-				console.error('Failed to fetch artists:', error)
-				return []
+				console.error("Failed to fetch artists:", error);
+				return [];
 			}
 		},
-	})
+	});
 
 	if (isLoading) {
 		return (
@@ -81,7 +83,7 @@ export function ArtistsGrid() {
 				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
 				<p className="text-muted-foreground">Discovering amazing artists...</p>
 			</div>
-		)
+		);
 	}
 
 	if (error) {
@@ -95,7 +97,7 @@ export function ArtistsGrid() {
 					<Button onClick={() => window.location.reload()}>Try Again</Button>
 				</CardContent>
 			</Card>
-		)
+		);
 	}
 
 	return (
@@ -120,7 +122,7 @@ export function ArtistsGrid() {
 				</Card>
 			)}
 		</div>
-	)
+	);
 }
 
 function ArtistCard({ artist }: { artist: Artist }) {
@@ -136,7 +138,9 @@ function ArtistCard({ artist }: { artist: Artist }) {
 					</Avatar>
 					<div className="flex-1 min-w-0">
 						<CardTitle className="text-lg truncate">{artist.name}</CardTitle>
-						<p className="text-sm text-muted-foreground font-mono">{artist.address}</p>
+						<p className="text-sm text-muted-foreground font-mono">
+							{artist.address}
+						</p>
 					</div>
 				</div>
 			</CardHeader>
@@ -144,7 +148,9 @@ function ArtistCard({ artist }: { artist: Artist }) {
 				{/* Stats */}
 				<div className="grid grid-cols-3 gap-4 text-center">
 					<div>
-						<div className="text-lg font-semibold">{artist.collectionCount}</div>
+						<div className="text-lg font-semibold">
+							{artist.collectionCount}
+						</div>
 						<div className="text-xs text-muted-foreground">Collections</div>
 					</div>
 					<div>
@@ -193,5 +199,5 @@ function ArtistCard({ artist }: { artist: Artist }) {
 				</div>
 			</CardContent>
 		</Card>
-	)
+	);
 }

@@ -1,11 +1,20 @@
-'use client'
+"use client";
 
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { Bot, Wallet } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { useAccount } from "wagmi";
 import {
 	Conversation,
 	ConversationContent,
 	ConversationScrollButton,
-} from '@/components/ai-elements/conversation'
-import { Message, MessageAvatar, MessageContent } from '@/components/ai-elements/message'
+} from "@/components/ai-elements/conversation";
+import {
+	Message,
+	MessageAvatar,
+	MessageContent,
+} from "@/components/ai-elements/message";
 import {
 	PromptInput,
 	PromptInputButton,
@@ -13,79 +22,75 @@ import {
 	PromptInputTextarea,
 	PromptInputToolbar,
 	PromptInputTools,
-} from '@/components/ai-elements/prompt-input'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { PrepareMintSVGNFTData } from '@/types/mcp'
-import { useChat } from '@ai-sdk/react'
-import { DefaultChatTransport } from 'ai'
-import { Bot, Wallet } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
-import { MintTransactionHandler } from './mint-transaction-handler'
+} from "@/components/ai-elements/prompt-input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { PrepareMintSVGNFTData } from "@/types/mcp";
+import { MintTransactionHandler } from "./mint-transaction-handler";
 
 export function ChatInterface() {
-	const { isConnected } = useAccount()
-	const [pendingTransaction, setPendingTransaction] = useState<PrepareMintSVGNFTData | null>(null)
-	const [input, setInput] = useState('')
+	const { isConnected } = useAccount();
+	const [pendingTransaction, setPendingTransaction] =
+		useState<PrepareMintSVGNFTData | null>(null);
+	const [input, setInput] = useState("");
 
 	const { messages, sendMessage, status, error } = useChat({
 		transport: new DefaultChatTransport({
-			api: '/api/chat',
+			api: "/api/create",
 		}),
-	})
+	});
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setInput(e.target.value)
-	}
+		setInput(e.target.value);
+	};
 
 	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault()
+		e.preventDefault();
 		if (input.trim()) {
-			sendMessage({ text: input })
-			setInput('')
+			sendMessage({ text: input });
+			setInput("");
 		}
-	}
+	};
 
 	// Detect transaction responses in messages
 	useEffect(() => {
-		if (pendingTransaction) return
+		if (pendingTransaction) return;
 
 		for (const message of messages) {
-			if (message.role === 'assistant') {
-				let transaction: PrepareMintSVGNFTData | null = null
-				let messageText = ''
+			if (message.role === "assistant") {
+				let transaction: PrepareMintSVGNFTData | null = null;
+				let messageText = "";
 
 				// Extract text from message parts
 				if (message.parts) {
 					for (const part of message.parts) {
-						if (part.type === 'text') {
-							messageText += part.text || ''
+						if (part.type === "text") {
+							messageText += part.text || "";
 						}
 					}
 				}
 
-				transaction = detectTransactionResponse(messageText)
+				transaction = detectTransactionResponse(messageText);
 
 				// If not found in text, check tool results
 				if (!transaction && message.parts) {
 					for (const part of message.parts) {
-						if (part.type.startsWith('tool-')) {
-							const toolPart = part as any
+						if (part.type.startsWith("tool-")) {
+							const toolPart = part as any;
 							if (
-								toolPart.toolName === 'prepareMintSVGNFT' &&
-								toolPart.state === 'result' &&
+								toolPart.toolName === "prepareMintSVGNFT" &&
+								toolPart.state === "result" &&
 								toolPart.output
 							) {
 								try {
-									const parsed = JSON.parse(toolPart.output)
+									const parsed = JSON.parse(toolPart.output);
 									if (
 										parsed.success &&
 										parsed.transaction &&
-										parsed.metadata?.functionName === 'mintNFT'
+										parsed.metadata?.functionName === "mintNFT"
 									) {
-										transaction = parsed as PrepareMintSVGNFTData
-										break
+										transaction = parsed as PrepareMintSVGNFTData;
+										break;
 									}
 								} catch {
 									// Ignore parsing errors
@@ -96,62 +101,64 @@ export function ChatInterface() {
 				}
 
 				if (transaction) {
-					setPendingTransaction(transaction)
-					break
+					setPendingTransaction(transaction);
+					break;
 				}
 			}
 		}
-	}, [messages, pendingTransaction])
+	}, [messages, pendingTransaction]);
 
-	const detectTransactionResponse = (content: string): PrepareMintSVGNFTData | null => {
+	const detectTransactionResponse = (
+		content: string,
+	): PrepareMintSVGNFTData | null => {
 		try {
-			const parsed = JSON.parse(content)
+			const parsed = JSON.parse(content);
 			if (
 				parsed.success &&
 				parsed.transaction &&
-				parsed.metadata?.functionName === 'mintNFT'
+				parsed.metadata?.functionName === "mintNFT"
 			) {
-				return parsed as PrepareMintSVGNFTData
+				return parsed as PrepareMintSVGNFTData;
 			}
 		} catch {
-			const jsonBlockRegex = /```json\s*([\s\S]*?)\s*```/
-			const match = content.match(jsonBlockRegex)
+			const jsonBlockRegex = /```json\s*([\s\S]*?)\s*```/;
+			const match = content.match(jsonBlockRegex);
 			if (match) {
-				const parsed = JSON.parse(match[1])
+				const parsed = JSON.parse(match[1]);
 				if (
 					parsed.success &&
 					parsed.transaction &&
-					parsed.metadata?.functionName === 'mintNFT'
+					parsed.metadata?.functionName === "mintNFT"
 				) {
-					return parsed as PrepareMintSVGNFTData
+					return parsed as PrepareMintSVGNFTData;
 				}
 			}
 			const jsonRegex =
-				/\{[\s\S]*"success"\s*:\s*true[\s\S]*"transaction"\s*[\s\S]*"mintNFT"[\s\S]*\}/
-			const jsonMatch = content.match(jsonRegex)
+				/\{[\s\S]*"success"\s*:\s*true[\s\S]*"transaction"\s*[\s\S]*"mintNFT"[\s\S]*\}/;
+			const jsonMatch = content.match(jsonRegex);
 			if (jsonMatch) {
-				const parsed = JSON.parse(jsonMatch[0])
+				const parsed = JSON.parse(jsonMatch[0]);
 				if (
 					parsed.success &&
 					parsed.transaction &&
-					parsed.metadata?.functionName === 'mintNFT'
+					parsed.metadata?.functionName === "mintNFT"
 				) {
-					return parsed as PrepareMintSVGNFTData
+					return parsed as PrepareMintSVGNFTData;
 				}
 			}
 		}
-		return null
-	}
+		return null;
+	};
 
 	const handleTransactionComplete = useCallback((hash: string) => {
-		console.log('Transaction completed:', hash)
-		setPendingTransaction(null)
-	}, [])
+		console.log("Transaction completed:", hash);
+		setPendingTransaction(null);
+	}, []);
 
 	const handleTransactionError = useCallback((error: string) => {
-		console.error('Transaction failed:', error)
-		setPendingTransaction(null)
-	}, [])
+		console.error("Transaction failed:", error);
+		setPendingTransaction(null);
+	}, []);
 
 	if (!isConnected) {
 		return (
@@ -180,7 +187,7 @@ export function ChatInterface() {
 					</div>
 				</CardContent>
 			</Card>
-		)
+		);
 	}
 
 	return (
@@ -211,13 +218,13 @@ export function ChatInterface() {
 							<Message key={message.id} from={message.role}>
 								<MessageAvatar
 									src=""
-									name={message.role === 'user' ? 'You' : 'AI'}
+									name={message.role === "user" ? "You" : "AI"}
 								/>
 								<MessageContent>
-									{message.role === 'assistant' && message.parts ? (
+									{message.role === "assistant" && message.parts ? (
 										<div className="space-y-2">
 											{message.parts.map((part, index) => {
-												if (part.type === 'text') {
+												if (part.type === "text") {
 													return (
 														<div
 															key={index}
@@ -225,10 +232,10 @@ export function ChatInterface() {
 														>
 															{part.text}
 														</div>
-													)
+													);
 												}
-												if (part.type.startsWith('tool-')) {
-													const toolPart = part as any
+												if (part.type.startsWith("tool-")) {
+													const toolPart = part as any;
 													return (
 														<div
 															key={index}
@@ -237,27 +244,23 @@ export function ChatInterface() {
 															<div className="font-medium text-muted-foreground">
 																Tool: {toolPart.toolName}
 															</div>
-															{toolPart.state === 'result' &&
+															{toolPart.state === "result" &&
 																toolPart.output && (
 																	<pre className="mt-1 overflow-x-auto text-xs">
-																		{JSON.stringify(
-																			toolPart.output,
-																			null,
-																			2
-																		)}
+																		{JSON.stringify(toolPart.output, null, 2)}
 																	</pre>
 																)}
 														</div>
-													)
+													);
 												}
-												return null
+												return null;
 											})}
 										</div>
 									) : (
 										<div className="prose prose-sm max-w-none">
-											{message.parts?.[0]?.type === 'text'
+											{message.parts?.[0]?.type === "text"
 												? message.parts[0].text
-												: 'No content available'}
+												: "No content available"}
 										</div>
 									)}
 								</MessageContent>
@@ -280,8 +283,9 @@ export function ChatInterface() {
 				{error && (
 					<Alert variant="destructive">
 						<AlertDescription>
-							{error.message.includes('429') || error.message.includes('rate limit')
-								? 'Rate limit exceeded. Please wait a moment before trying again.'
+							{error.message.includes("429") ||
+							error.message.includes("rate limit")
+								? "Rate limit exceeded. Please wait a moment before trying again."
 								: error.message}
 						</AlertDescription>
 					</Alert>
@@ -298,7 +302,7 @@ export function ChatInterface() {
 							<PromptInputButton
 								variant="ghost"
 								size="sm"
-								onClick={() => setInput('')}
+								onClick={() => setInput("")}
 							>
 								Clear
 							</PromptInputButton>
@@ -308,5 +312,5 @@ export function ChatInterface() {
 				</PromptInput>
 			</CardContent>
 		</Card>
-	)
+	);
 }
