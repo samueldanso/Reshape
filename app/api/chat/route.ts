@@ -1,12 +1,15 @@
 import { config } from '@/lib/config'
 import { openai } from '@ai-sdk/openai'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
-import { experimental_createMCPClient, streamText } from 'ai'
+import { convertToModelMessages, experimental_createMCPClient, streamText } from 'ai'
 
 export const maxDuration = 30
 
 export async function POST(req: Request) {
 	const { messages } = await req.json()
+
+	// Convert UIMessage[] to ModelMessage[] for AI SDK v5 compatibility
+	const modelMessages = convertToModelMessages(messages)
 
 	const url = new URL(config.mcpServerUrl)
 	const mcpClient = await experimental_createMCPClient({
@@ -18,7 +21,7 @@ export async function POST(req: Request) {
 	const result = await streamText({
 		model: openai('gpt-4o'),
 		tools,
-		messages,
+		messages: modelMessages,
 		system: `You are a helpful AI assistant for the Reshape platform - an AI-powered NFT platform for vibe artists on Shape Network.
 
 You have access to multiple MCP tools that can help with blockchain operations and NFT management:

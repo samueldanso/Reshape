@@ -176,19 +176,11 @@ export function ChatInterface() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<Alert>
-				<Info className="h-4 w-4" />
-				<AlertDescription>
-					<strong>Demo Mode (rate limited):</strong> Click on assistant responses that
-					used tools to expand and view the tool calls and raw responses.
-				</AlertDescription>
-			</Alert>
-
 			<Card className="w-full">
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Bot className="h-5 w-5" />
-						Shape Chat Assistant
+						Shape AI Assistant
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-4">
@@ -545,19 +537,19 @@ export function ChatInterface() {
 
 const SUGGESTED_PROMPTS = [
 	{
-		title: 'Collection Analytics',
-		prompt: 'Give me data about the DeePle collection (0xf2e4b2a15872a20d0ffb336a89b94ba782ce9ba5)',
+		title: 'Shape Network Status',
+		prompt: "What's the current status of Shape Network?",
 	},
 	{
-		title: 'Gasback Simulator',
-		prompt: 'How much gasback do I earn with 1000 tx / day for 6 months?',
+		title: 'NFT Collection Analytics',
+		prompt: 'Give me analytics for the DeePle collection (0xf2e4b2a15872a20d0ffb336a89b94ba782ce9ba5)',
 	},
 	{
-		title: 'Shape Network Status & Information',
-		prompt: 'Get the current Shape Network status and RPC information',
+		title: 'Gasback Calculator',
+		prompt: 'How much gasback can I earn with 1000 transactions per day for 6 months?',
 	},
 	{
-		title: 'Mint SVG NFT',
-		prompt: 'Create an SVG NFT for me with a simple black circle design, name it "My First Shape NFT" and mint it to my wallet',
+		title: 'Create SVG NFT',
+		prompt: 'Create an SVG NFT for me with a simple design, name it "My First Reshape NFT"',
 	},
 ]
