@@ -68,7 +68,7 @@ export function NFTGallery() {
 						description: `AI-generated NFT on Shape Network`,
 						image:
 							nft.imageUrl ||
-							`data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI0ZGNkI2QiIvPjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iODAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjgiLz48dGV4dCB4PSIyMDAiIHk9IjIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2Ij5BSSBHZW5lcmF0ZWQgTkZUIzwvc3ZnPg==`,
+							`https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=400&fit=crop&crop=center`,
 						collection: nft.contractAddress || 'AI Generated',
 						tokenId: nft.tokenId,
 						likes: Math.floor(Math.random() * 50) + 5, // Random likes for now

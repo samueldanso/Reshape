@@ -21,10 +21,12 @@ import {
 	PromptInputTools,
 } from '@/components/ai-elements/prompt-input'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { useImageGeneration } from '@/hooks/use-image-generation'
 import type { PrepareMintSVGNFTData } from '@/types/mcp'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
-import { Bot, Image, Wallet } from 'lucide-react'
+import { Bot, Download, ExternalLink, Image, Sparkles, Wallet } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useAccount } from 'wagmi'
@@ -35,6 +37,11 @@ export function ChatInterface() {
 	const [pendingTransaction, setPendingTransaction] = useState<PrepareMintSVGNFTData | null>(null)
 	const [input, setInput] = useState('')
 	const [selectedModel, setSelectedModel] = useState('gpt-4o')
+	const [currentPrompt, setCurrentPrompt] = useState('')
+
+	// Image generation hook
+	const { generateImage, isGenerating, generatedImage, clearGeneratedImage } =
+		useImageGeneration()
 
 	const { messages, sendMessage, status, error } = useChat({
 		transport: new DefaultChatTransport({
@@ -82,15 +89,34 @@ export function ChatInterface() {
 		})
 	}
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		if (input.trim()) {
-			toast.success('🚀 Sending your creative prompt...', {
-				description: 'The AI is processing your request to generate your NFT.',
+			setCurrentPrompt(input)
+
+			// First, generate the image
+			toast.info('🎨 Starting your creative journey...', {
+				description: "First, let's generate your artwork, then create the NFT",
 				duration: 3000,
 			})
-			sendMessage({ text: input })
-			setInput('')
+
+			const imageResult = await generateImage(input)
+
+			if (imageResult.success && imageResult.image) {
+				// Image generated successfully, now send to AI for NFT creation
+				toast.success('🚀 Now creating your NFT...', {
+					description: 'The AI is preparing your NFT metadata',
+					duration: 3000,
+				})
+
+				// Send the enhanced prompt to AI for NFT creation
+				const enhancedPrompt = `I want to create an NFT with this artwork: ${input}. The image has been generated and stored on IPFS with hash: ${imageResult.image.ipfsHash}. Please create the NFT metadata and prepare it for minting on Shape Network.`
+
+				sendMessage({ text: enhancedPrompt })
+				setInput('')
+			} else {
+				toast.error('Failed to generate image. Please try again.')
+			}
 		} else {
 			toast.error('Please enter a description for your NFT', {
 				description: 'Be specific about style, mood, colors, and composition.',
@@ -279,26 +305,14 @@ export function ChatInterface() {
 																					}
 																				}
 																			}}
-																			className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+																			className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105"
 																		>
 																			🚀 Mint NFT Now
 																		</button>
 																	</div>
 																)
 															}
-
-															return (
-																<div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-lg border-2 border-dashed border-muted-foreground/30 p-8 text-center">
-																	<Image className="size-12 text-muted-foreground mx-auto mb-3" />
-																	<p className="text-xs text-muted-foreground mb-2">
-																		Generated Image
-																	</p>
-																	<p className="text-xs text-muted-foreground">
-																		Your AI-generated NFT will
-																		appear here
-																	</p>
-																</div>
-															)
+															return null
 														})()}
 													</div>
 												)
@@ -429,6 +443,104 @@ export function ChatInterface() {
 				<ConversationScrollButton />
 			</Conversation>
 
+			{/* Generated Image Display */}
+			{generatedImage && (
+				<div className="mt-6 p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-xl border border-border/50">
+					<div className="text-center mb-4">
+						<div className="flex items-center justify-center gap-2 mb-2">
+							<Sparkles className="size-5 text-blue-600" />
+							<h3 className="text-lg font-semibold text-foreground">
+								Your Generated Artwork
+							</h3>
+						</div>
+						<p className="text-sm text-muted-foreground">
+							Your AI-generated artwork has been created and stored on IPFS
+						</p>
+					</div>
+
+					<div className="flex flex-col md:flex-row gap-6 items-center">
+						{/* Image Display */}
+						<div className="flex-shrink-0">
+							<div className="relative group">
+								<img
+									src={`data:image/png;base64,${generatedImage.base64}`}
+									alt="AI Generated Artwork"
+									className="w-64 h-64 object-cover rounded-lg border-2 border-border/50 shadow-lg group-hover:scale-105 transition-transform duration-300"
+								/>
+								<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+									<ExternalLink className="size-8 text-white" />
+								</div>
+							</div>
+						</div>
+
+						{/* Image Details & Actions */}
+						<div className="flex-1 space-y-4">
+							<div className="space-y-3">
+								<div>
+									<h4 className="font-medium text-foreground mb-1">IPFS Hash</h4>
+									<code className="text-xs bg-muted/50 px-2 py-1 rounded font-mono text-muted-foreground break-all">
+										{generatedImage.ipfsHash}
+									</code>
+								</div>
+
+								<div>
+									<h4 className="font-medium text-foreground mb-1">
+										Gateway URL
+									</h4>
+									<a
+										href={generatedImage.gatewayUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="text-xs text-blue-600 hover:text-blue-700 underline break-all"
+									>
+										{generatedImage.gatewayUrl}
+									</a>
+								</div>
+							</div>
+
+							<div className="flex flex-wrap gap-2">
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={() => {
+										const link = document.createElement('a')
+										link.href = `data:image/png;base64,${generatedImage.base64}`
+										link.download = 'ai-generated-artwork.png'
+										link.click()
+									}}
+									className="flex items-center gap-2"
+								>
+									<Download className="size-4" />
+									Download
+								</Button>
+
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={() => {
+										navigator.clipboard.writeText(generatedImage.gatewayUrl)
+										toast.success('🔗 Gateway URL copied to clipboard!')
+									}}
+									className="flex items-center gap-2"
+								>
+									<ExternalLink className="size-4" />
+									Copy URL
+								</Button>
+
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={clearGeneratedImage}
+									className="flex items-center gap-2"
+								>
+									Clear
+								</Button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+
 			{error && (
 				<Alert variant="destructive">
 					<AlertDescription>
@@ -481,8 +593,46 @@ export function ChatInterface() {
 						</div>
 					</div>
 
-					<p className="text-sm text-muted-foreground">
-						Or start typing below to describe your vision...
+					<div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-xl p-6 border border-border/50 max-w-2xl mx-auto">
+						<h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+							<Sparkles className="size-5 text-blue-600" />
+							How It Works
+						</h4>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+							<div className="text-center">
+								<div className="size-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
+									<span className="text-lg font-bold text-blue-600">1</span>
+								</div>
+								<p className="font-medium text-foreground mb-1">
+									Describe Your Vision
+								</p>
+								<p className="text-xs text-muted-foreground">
+									Tell us what you want to create
+								</p>
+							</div>
+							<div className="text-center">
+								<div className="size-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
+									<span className="text-lg font-bold text-purple-600">2</span>
+								</div>
+								<p className="font-medium text-foreground mb-1">AI Generates Art</p>
+								<p className="text-xs text-muted-foreground">
+									DALL-E 3 creates your artwork
+								</p>
+							</div>
+							<div className="text-center">
+								<div className="size-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
+									<span className="text-lg font-bold text-green-600">3</span>
+								</div>
+								<p className="font-medium text-foreground mb-1">Mint as NFT</p>
+								<p className="text-xs text-muted-foreground">
+									Store on Shape Network
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<p className="text-sm text-muted-foreground mt-6">
+						Start typing below to describe your vision...
 					</p>
 				</div>
 
@@ -495,17 +645,22 @@ export function ChatInterface() {
 						onChange={handleInputChange}
 						placeholder="Describe the image you want to create..."
 						className="text-lg font-medium placeholder:font-bold placeholder:text-foreground/80 min-h-[120px] resize-none"
+						disabled={isGenerating}
 					/>
 					<PromptInputToolbar className="bg-muted/30 border-t border-border/50">
 						<PromptInputTools>
 							{/* Show generated image thumbnail when available */}
-							{messages.some((m) => m.role === 'assistant') && (
+							{generatedImage && (
 								<div className="flex items-center space-x-2 mr-2">
 									<div className="size-8 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 border border-border/50 flex items-center justify-center">
-										<Image className="size-4 text-muted-foreground" />
+										<img
+											src={`data:image/png;base64,${generatedImage.base64}`}
+											alt="Generated"
+											className="size-6 rounded object-cover"
+										/>
 									</div>
 									<span className="text-xs text-muted-foreground font-medium">
-										History
+										Artwork Ready
 									</span>
 								</div>
 							)}
@@ -515,6 +670,7 @@ export function ChatInterface() {
 								size="sm"
 								onClick={handleTemplateClick}
 								className="text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg px-3 py-2"
+								disabled={isGenerating}
 							>
 								<Image className="size-4 mr-2" />
 								<span className="hidden sm:inline">Template</span>
@@ -537,15 +693,29 @@ export function ChatInterface() {
 							<PromptInputButton
 								variant="ghost"
 								size="sm"
-								onClick={() => setInput('')}
+								onClick={() => {
+									setInput('')
+									clearGeneratedImage()
+								}}
 								className="text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg px-3 py-2"
+								disabled={isGenerating}
 							>
 								Clear
 							</PromptInputButton>
 						</PromptInputTools>
 
-						<PromptInputSubmit className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0 shadow-sm px-6 py-2 rounded-lg font-medium">
-							Send
+						<PromptInputSubmit
+							className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border-0 shadow-sm px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+							disabled={isGenerating || !input.trim()}
+						>
+							{isGenerating ? (
+								<>
+									<Loader className="size-4 mr-2 animate-spin" />
+									Generating...
+								</>
+							) : (
+								'Create Artwork'
+							)}
 						</PromptInputSubmit>
 					</PromptInputToolbar>
 				</PromptInput>

@@ -3,7 +3,7 @@ import { openai } from '@ai-sdk/openai'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { convertToModelMessages, experimental_createMCPClient, streamText } from 'ai'
 
-export const maxDuration = 30
+export const maxDuration = 60
 
 export async function POST(req: Request) {
 	const { messages } = await req.json()
@@ -22,7 +22,6 @@ export async function POST(req: Request) {
 		model: openai('gpt-4o'),
 		tools,
 		messages: modelMessages,
-		maxSteps: 5, // Allow multiple tool calls for complex operations
 		system: `You are the Curator Agent, a creative AI assistant for the Reshape platform - an AI-powered NFT platform for vibe artists on Shape Network.
 
 Your role is to help users transform their creative vision into unique NFTs. Here's how you work:
@@ -57,11 +56,16 @@ Your role is to help users transform their creative vision into unique NFTs. Her
 - Create meaningful names and descriptions for the NFTs
 - Make each NFT special and unique
 
+💡 **Important**: When users want to create NFTs, you should:
+1. First, create a detailed, artistic description of their vision
+2. Then use the prepareMintSVGNFT tool to create the actual NFT
+3. The tool will handle the technical details of minting on Shape Network
+
 Remember: You're not just a tool - you're a creative partner helping users bring their artistic vision to life. Be enthusiastic, creative, and inspiring!`,
 		onFinish: async () => {
 			await mcpClient.close()
 		},
 	})
 
-	return result.toDataStreamResponse()
+	return result.toTextStreamResponse()
 }
