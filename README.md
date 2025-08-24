@@ -12,14 +12,13 @@ Reshape is about giving power back to creators and collectors. With AI as a co-c
 
 ## ✨ Features
 
-- **AI Art Generation (Curator Agent)** – Generate unique NFT art instantly from text prompts with the Curator Agent.
+- **AI Art Generation (Curator Agent)** – Instantly generate unique NFT art from text prompts with the Curator Agent.
 - **NFT Minting** – Mint your AI-generated art directly to Shape L2 for verifiable ownership.
-- **Gallery Curation** – Arrange and showcase your minted NFTs in beautiful, personalised galleries.
+- **Gallery Curation** – Arrange and showcase your minted NFTs in beautiful, personalized galleries.
 - **Wallet Integration** – Connect your Shape-compatible wallet for seamless NFT creation and collection tracking.
-- **Curator Agent Guidance** – AI assistant provides layout suggestions, prompts, and creative recommendations.
-- **NFT Discovery & Trading (Discovery Agent)** (Roadmap) – Explore trending collections, discover new artists, mint, buy, and sell NFTs.
+- **NFT Discovery & Trading ** (Roadmap) – Explore trending collections, discover new artists, and mint, buy, or sell NFTs.
+- **Art Critique (Critique Agent)** (Roadmap) – Receive quick AI-powered feedback on your artwork to improve and iterate.
 - **Profiles & Social** (Roadmap) – Public profiles for creators with the ability to like and interact with NFTs.
-- **Art Critique(Critique Agent)** (Roadmap) – Receive quick AI-powered feedback on your artwork to improve and iterate.
 
 ## 🛠️ How It Works
 
@@ -29,7 +28,7 @@ Reshape is about giving power back to creators and collectors. With AI as a co-c
    Sign in with your wallet to get started.
 
 2. **Generate Art**
-   Enter a text prompt or vibe description—let the Curator Agent create unique AI-powered NFT art for you.
+   Enter a vibe text prompt the Curator Agent create unique AI-powered NFT art for you.
 
 3. **Preview & Edit**
    Instantly view your generated image and refine your prompt if you want to iterate.
@@ -48,10 +47,10 @@ Reshape is about giving power back to creators and collectors. With AI as a co-c
    Link your Shape-compatible wallet to access and manage your NFT collection.
 
 2. **Explore Collections**
-   Browse AI-generated NFTs from other users or discover trending collections (Discovery Agent coming soon).
+   Browse and trade AI-generated NFTs from other users or discover trending collections
 
 3. **Interact & Curate**
-   Like, organize, and display your favorite NFTs in your own galleries.
+   Like, bookmark, and display your favorite NFTs in your own galleries.
 
 4. **Track Ownership**
    Verify NFT ownership and metadata directly on-chain for authenticity and provenance.
@@ -74,19 +73,25 @@ Reshape is about giving power back to creators and collectors. With AI as a co-c
 - **RPC & NFT API**: [Alchemy SDK](https://docs.alchemy.com/reference/alchemy-sdk-quickstart)
 - **Notifications**: [Sonner](https://sonner.emilkowal.ski/)
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-1. **Clone or use as template**
+### Prerequisites
+
+- Node.js 18+
+- **Package Manager**: [Bun](https://bun.sh/)
+- **Formatter & Linter**: [Biome](https://biomejs.dev/)
+
+1. **Clone the repo**
 
     ```bash
-    git clone https://github.com/shape-network/builder-kit.git
-    cd builder-kit
+    git clone git@github.com:samueldanso/Reshape.git
+    cd Reshape
     ```
 
 2. **Install dependencies**
 
     ```bash
-    yarn install
+    bun install
     ```
 
 3. **Set up environment variables**
@@ -99,28 +104,18 @@ Reshape is about giving power back to creators and collectors. With AI as a co-c
     - `NEXT_PUBLIC_ALCHEMY_KEY`: Get from [Alchemy](https://alchemy.com)
     - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`: Get from [WalletConnect](https://cloud.walletconnect.com)
     - `NEXT_PUBLIC_CHAIN_ID`: Use `11011` for Shape Sepolia or `360` for Shape Mainnet
+    - `OPENAI_API_KEY`: Your_openAI_api_key
+    - `PINATA_JWT`: Your_pinata_jwt
+    - `NEXT_PUBLIC_GATEWAY_URL`= Your_Pinata_Gateway_URL
 
 4. **Start development server**
 
     ```bash
-    yarn dev
+    bun dev
     ```
 
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 🛠️ Development
-
-### Available Scripts
-
-- `yarn dev` - Start development server with Turbopack
-- `yarn build` - Build for production
-- `yarn start` - Start production server
-- `yarn lint` - Run ESLint
-- `yarn lint:fix` - Fix ESLint issues
-- `yarn type-check` - Run TypeScript type checking
-- `yarn format` - Format code with Prettier
-- `yarn format:check` - Check code formatting
 
 ### Project Structure
 
@@ -147,60 +142,23 @@ Reshape is about giving power back to creators and collectors. With AI as a co-c
 └── public/               # Static assets
 ```
 
-## 🎨 Customization
-
-### Theme Customization
-
-Edit `app/globals.css` to customize the color scheme:
-
-```css
-:root {
-	--background: 0 0% 100%;
-	--foreground: 222.2 84% 4.9%;
-	/* ... other CSS variables */
-}
-```
-
-### Adding Components
-
-Use Shadcn/ui CLI to add new components:
-
-```bash
-npx shadcn@latest add button
-```
-
-### Web3 Integration
-
-The template includes examples of Web3 integration:
-
-- Wallet connection with RainbowKit
-- Balance fetching with custom hooks
-- Chain switching and network detection
-- Error handling for Web3 operations
-
 ## 🌐 Deployment
 
-### Vercel (Recommended)
+Deploy your repository to [Vercel](https://vercel.com)
 
-1. Push your code to GitHub
-2. Connect your repository to [Vercel](https://vercel.com)
-3. Add your environment variables in Vercel dashboard
-4. Deploy!
+## Roadmap
 
-## 📚 Documentation
-
--
+- [ ] Buy, sell, and trade NFTS
+- [ ] Receive quick AI-powered feedback on your artwork to improve and iterate.
+- [ ] Social profiles for creators with the ability to like and interact with NFTs.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to submit a Pull Request.
+1. Fork this repository
+2. Create your feature branch
+3. Commit your changes
+4. Open a Pull Request
 
-## 📄 License
+## Links
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 💬 Support
-
-- [Shape Discord](http://discord.com/invite/shape-l2)
-- [Twitter/X @Shape_L2](https://x.com/Shape_L2)
-- [Twitter/X @williamhzo](https://x.com/williamhzo)
+- **Live Demo**: [reshape-ai-demo.vercel.app](https://reshape-ai-demo.vercel.app
