@@ -1,8 +1,8 @@
+import type { Metadata } from "next";
+import { Mona_Sans } from "next/font/google";
 import { Header } from "@/components/header";
 import { Providers } from "@/components/providers";
 import { AppSidebar } from "@/components/sidebar";
-import type { Metadata } from "next";
-import { Mona_Sans } from "next/font/google";
 import "./globals.css";
 
 const monaSans = Mona_Sans({

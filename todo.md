@@ -99,12 +99,14 @@ export interface NFTMetadata {
 
 ### 2.1 AI Art Generation Interface (`/create` route)
 
-**Files to create:**
+**Files to create (following frontend.mdc naming conventions):**
 
 - `app/create/page.tsx` - Main creation page
 - `app/create/_components/art-generator.tsx` - AI art generation form
 - `app/create/_components/prompt-input.tsx` - Prompt input component
 - `app/create/_components/generation-preview.tsx` - Generated art preview
+- `app/create/_components/mint-handler.tsx` - NFT minting component
+- `app/create/_components/loading-states.tsx` - Loading and error states
 
 **Implementation:**
 
@@ -120,13 +122,15 @@ export default function CreatePage() {
 }
 ```
 
-**Features:**
+**Features (following frontend.mdc requirements):**
 
 - Text prompt input with suggestions
-- AI art generation with loading states
-- Preview generated images
+- AI art generation with proper loading states (TanStack Query)
+- Preview generated images with error boundaries
 - Edit/regenerate functionality
-- Mint to blockchain option
+- Mint to blockchain option using MCP tools
+- Toast notifications for success/error states (sonner)
+- Proper error handling and user feedback
 
 **References:**
 
@@ -577,3 +581,25 @@ bun add -D cypress @cypress/vite-dev-server
 - ✅ Network status
 
 **Reshape is ready to build on top of this solid MCP foundation!** 🎨✨
+
+---
+
+## 📋 **FRONTEND.MDC COMPLIANCE CHECKLIST**
+
+### **✅ Already Compliant:**
+
+- ✅ **Technology Stack** - Next.js 15, React 19, TypeScript, Tailwind CSS, shadcn/ui
+- ✅ **Data Fetching** - TanStack Query for all API calls
+- ✅ **Web3 Integration** - Shape Network, RainbowKit, Wagmi
+- ✅ **Package Management** - Using `bun` as specified
+- ✅ **Component Structure** - Following component colocation principles
+
+### **🔧 Need to Ensure in Implementation:**
+
+- **Component Naming** - Use kebab-case for ALL components (e.g., `art-generator.tsx`)
+- **File Structure** - Follow exact folder structure: `app/[feature]/_components/`
+- **Error Handling** - Implement proper error boundaries and user feedback
+- **Loading States** - Use TanStack Query's built-in loading states
+- **Toast Notifications** - Use sonner for success/error feedback
+- **TypeScript** - Use interfaces over types, functional components only
+- **Performance** - Server Components when possible, dynamic loading for non-critical

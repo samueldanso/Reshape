@@ -1,48 +1,51 @@
-import { config } from '@/lib/config'
-import { type NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from "next/server";
+import { config } from "@/lib/config";
 
 export async function POST(request: NextRequest) {
 	try {
-		const { toolName, parameters } = await request.json()
+		const { toolName, parameters } = await request.json();
 
 		// Validate required fields
 		if (!toolName) {
-			return NextResponse.json({ error: 'Tool name is required' }, { status: 400 })
+			return NextResponse.json(
+				{ error: "Tool name is required" },
+				{ status: 400 },
+			);
 		}
 
 		// Create JSON-RPC 2.0 request for the MCP server
 		const rpcRequest = {
-			jsonrpc: '2.0',
+			jsonrpc: "2.0",
 			id: Date.now(),
-			method: 'tools/call',
+			method: "tools/call",
 			params: {
 				name: toolName,
 				arguments: parameters || {},
 			},
-		}
+		};
 
 		// Call the MCP server
 		const mcpResponse = await fetch(config.mcpServerUrl, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
+				"Content-Type": "application/json",
+				Accept: "application/json",
 			},
 			body: JSON.stringify(rpcRequest),
-		})
+		});
 
 		if (!mcpResponse.ok) {
-			throw new Error(`MCP server error: ${mcpResponse.status}`)
+			throw new Error(`MCP server error: ${mcpResponse.status}`);
 		}
 
-		const data = await mcpResponse.json()
+		const data = await mcpResponse.json();
 
 		// Handle JSON-RPC errors
 		if (data.error) {
 			return NextResponse.json(
-				{ error: data.error.message || 'MCP tool execution failed' },
-				{ status: 400 }
-			)
+				{ error: data.error.message || "MCP tool execution failed" },
+				{ status: 400 },
+			);
 		}
 
 		// Return the result
@@ -50,15 +53,15 @@ export async function POST(request: NextRequest) {
 			success: true,
 			result: data.result,
 			toolName,
-		})
+		});
 	} catch (error) {
-		console.error('Error calling MCP tool:', error)
+		console.error("Error calling MCP tool:", error);
 		return NextResponse.json(
 			{
 				error: `Failed to call MCP tool. Make sure the MCP server is reachable at ${config.mcpServerUrl}.`,
 			},
-			{ status: 500 }
-		)
+			{ status: 500 },
+		);
 	}
 }
 
@@ -67,39 +70,39 @@ export async function GET() {
 	try {
 		// Test connection to MCP server by listing available tools
 		const rpcRequest = {
-			jsonrpc: '2.0',
+			jsonrpc: "2.0",
 			id: Date.now(),
-			method: 'tools/list',
+			method: "tools/list",
 			params: {},
-		}
+		};
 
 		const mcpResponse = await fetch(config.mcpServerUrl, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
+				"Content-Type": "application/json",
+				Accept: "application/json",
 			},
 			body: JSON.stringify(rpcRequest),
-		})
+		});
 
 		if (!mcpResponse.ok) {
-			throw new Error(`MCP server error: ${mcpResponse.status}`)
+			throw new Error(`MCP server error: ${mcpResponse.status}`);
 		}
 
-		const data = await mcpResponse.json()
+		const data = await mcpResponse.json();
 
 		return NextResponse.json({
 			success: true,
-			message: 'MCP server is reachable',
+			message: "MCP server is reachable",
 			availableTools: data.result?.tools || [],
-		})
+		});
 	} catch {
 		return NextResponse.json(
 			{
 				success: false,
 				error: `MCP server is not reachable. Make sure ${config.mcpServerUrl} is accessible.`,
 			},
-			{ status: 503 }
-		)
+			{ status: 503 },
+		);
 	}
 }

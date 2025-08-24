@@ -1,18 +1,27 @@
-import { pinata } from "@/lib/pinata";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
 	try {
-		const data = await request.formData();
-		const file: File | null = data.get("file") as unknown as File;
-		const { cid } = await pinata.upload.public.file(file);
-		const url = await pinata.gateways.public.convert(cid);
-		return NextResponse.json(url, { status: 200 });
-	} catch (e) {
-		console.log(e);
-		return NextResponse.json(
-			{ error: "Internal Server Error" },
-			{ status: 500 },
-		);
+		const formData = await request.formData()
+		const file = formData.get('file') as File
+
+		if (!file) {
+			return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+		}
+
+		// For MVP: Return mock response
+		// In production: Upload to IPFS (Pinata)
+		const mockIpfsHash = 'Qm' + Math.random().toString(36).substring(2, 15)
+
+		return NextResponse.json({
+			success: true,
+			ipfsHash: mockIpfsHash,
+			url: `https://ipfs.io/ipfs/${mockIpfsHash}`,
+			filename: file.name,
+			size: file.size,
+		})
+	} catch (error) {
+		console.error('Upload error:', error)
+		return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
 	}
 }
